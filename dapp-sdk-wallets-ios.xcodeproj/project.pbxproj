@@ -22,7 +22,7 @@
 		70AE96FD236B4A8400EE0C2B /* DappLoadingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DappLoadingView.swift; sourceTree = "<group>"; };
 		70B9E9122350E89F00C4F46F /* DappCode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DappCode.swift; sourceTree = "<group>"; };
 		70B9E9142350E92C00C4F46F /* DappUser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DappUser.swift; sourceTree = "<group>"; };
-		70DA56142322D31E0037E377 /* dapp_sdk_wallets_ios.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = dapp_sdk_wallets_ios.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		70DA56142322D31E0037E377 /* DappWalletMX.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = DappWalletMX.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		70DA56172322D31E0037E377 /* dapp_sdk_wallets_ios.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = dapp_sdk_wallets_ios.h; sourceTree = "<group>"; };
 		70DA56182322D31E0037E377 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		70E1AFF22327026F00323F0F /* DappWallet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DappWallet.swift; sourceTree = "<group>"; };
@@ -52,7 +52,7 @@
 		70DA56152322D31E0037E377 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				70DA56142322D31E0037E377 /* dapp_sdk_wallets_ios.framework */,
+				70DA56142322D31E0037E377 /* DappWalletMX.framework */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -102,7 +102,7 @@
 			);
 			name = "dapp-sdk-wallets-ios";
 			productName = "dapp-sdk-wallets-ios";
-			productReference = 70DA56142322D31E0037E377 /* dapp_sdk_wallets_ios.framework */;
+			productReference = 70DA56142322D31E0037E377 /* DappWalletMX.framework */;
 			productType = "com.apple.product-type.framework";
 		};
 /* End PBXNativeTarget section */
@@ -307,7 +307,7 @@
 					"@loader_path/Frameworks",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = mx.dapp.sdkwallets;
-				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				PRODUCT_NAME = DappWalletMX;
 				SKIP_INSTALL = YES;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
@@ -335,7 +335,7 @@
 					"@loader_path/Frameworks",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = mx.dapp.sdkwallets;
-				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				PRODUCT_NAME = DappWalletMX;
 				SKIP_INSTALL = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
