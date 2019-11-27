@@ -25,6 +25,11 @@ public enum DappEnviroment: Int {
     }
 }
 
+public enum QRType: Int {
+    case dapp = 0
+    case codi, codiDapp, unknown
+}
+
 public protocol DappWalletDelegate {
     func dappWalletSuccess(code: DappCode)
     
@@ -44,37 +49,46 @@ public class DappWallet {
         return !(authStatus == .restricted || authStatus == .denied)
     }
     
+    public func isValidCodi(_ text: String) -> Bool {
+        let qrType = getQRType(text)
+        return qrType == .codi || qrType == .codiDapp
+    }
+    
+    public func getQRType(_ qrText: String) -> QRType {
+        if let data = qrText.data(using: .utf8),
+            let json = try? JSONSerialization.jsonObject(with: data) as? [String: Any] {
+            if let jsonV = json["v"] as? [String: Any], let jsonIc = json["ic"] as? [String: Any] {
+                if json["TYP"] != nil && json["CRY"] != nil && jsonV["DEV"] != nil && jsonIc["IDC"] != nil && jsonIc["SER"] != nil && jsonIc["ENC"] != nil {
+                    if json["dapp"] != nil {
+                        return .codiDapp
+                    }
+                    return .codi
+                }
+            }
+            else if json["dapp"] != nil {
+                return .dapp
+            }
+        }
+        
+        if let url = URL(string: qrText), let host = url.host, host == "dapp.mx" {
+            var comps = url.pathComponents
+            comps.removeFirst()
+            if let p = comps.first, p == "c" {
+                return .dapp
+            }
+        }
+        
+        return .unknown
+    }
+    
     public func isValid(DappCode code: String) -> Bool {
-        guard let url = URL(string: code), let host = url.host, host == "dapp.mx" else {
-            return false
-        }
-        
-        var comps = url.pathComponents
-        comps.removeFirst()
-        
-        guard let p = comps.first, p == "c" else {
-            return false
-        }
-        
-        return true
+        let qrType = getQRType(code)
+        return qrType == .dapp || qrType == .codiDapp
     }
     
     public func readDappCode(code: String, delegate: DappWalletDelegate) {
         if apiKey.count == 0 {
             delegate.dappWalletFailure(error: .keyIsNotSet)
-            return
-        }
-        
-        guard let url = URL(string: code), let host = url.host, host == "dapp.mx" else {
-            delegate.dappWalletFailure(error: .invalidDappCode)
-            return
-        }
-        
-        var comps = url.pathComponents
-        comps.removeFirst()
-        
-        guard let p = comps.first, p == "c" else {
-            delegate.dappWalletFailure(error: .invalidDappCode)
             return
         }
         
@@ -85,6 +99,24 @@ public class DappWallet {
             }
             
             delegate.dappWalletSuccess(code: DappCode(with: data!))
+        }
+        
+        guard let url = URL(string: code), let host = url.host, host == "dapp.mx" else {
+            if let data = code.data(using: .utf8),
+                let json = try? JSONSerialization.jsonObject(with: data) as? [String: Any], let dappCode = json["dapp"] as? String {
+                dappRequest(url: "\(enviroment.getServer())/dapp-codes/\(dappCode)", handler: handler)
+                return
+            }
+            delegate.dappWalletFailure(error: .invalidDappCode)
+            return
+        }
+        
+        var comps = url.pathComponents
+        comps.removeFirst()
+        
+        guard let p = comps.first, p == "c" else {
+            delegate.dappWalletFailure(error: .invalidDappCode)
+            return
         }
         
         dappRequest(url: "\(enviroment.getServer())/dapp-codes/\(url.lastPathComponent)", handler: handler)

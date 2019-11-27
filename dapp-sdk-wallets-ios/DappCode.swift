@@ -18,6 +18,8 @@ public class DappCode {
     
     public var user: DappUser!
     
+    public var json = [String: Any]()
+    
     public init(with data: [String: Any]) {
         if let id = data["id"] as? String {
             self.id = id
@@ -31,5 +33,6 @@ public class DappCode {
         if let userData = data["dapp_user"] as? [String: Any] {
             self.user = DappUser(with: userData)
         }
+        self.json = data
     }
 }

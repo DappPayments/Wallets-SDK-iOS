@@ -12,6 +12,8 @@ public class DappUser {
     
     public var name: String!
     
+    public var address: String!
+    
     public var image: URL?
     
     public var suggestTip: Bool!
@@ -25,6 +27,9 @@ public class DappUser {
         }
         if let tip = data["suggest_tip"] as? Bool {
             self.suggestTip = tip
+        }
+        if let address = data["address"] as? String {
+            self.address = address
         }
     }
 }

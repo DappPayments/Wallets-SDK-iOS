@@ -1,3 +1,4 @@
+
 # Dapp Wallet SDK iOS
 [Dapp](https://dapp.mx) es una plataforma de pagos, enfocada en la seguridad de sus usuarios. Este SDK permite la lectura de códigos QR Dapp a wallets electrónicos.
 
@@ -49,6 +50,11 @@ if !DappWallet.shared.isValid(DappCode: qrTextFromScanner) {
     //Indique al usuario que no es un código válido
 }
 DappWallet.shared.readDappCode(code: code, delegate: self) //self == ViewController
+```
+3. **Dapp Wallet SDK iOS** también es compatible con CoDi. Existen dos funciones que puedes utilizar:
+```swift
+DappWallet.shared.isValidCodi(qrTextFromScanner) //true or false
+DappWallet.shared.getQRType(qrTextFromScanner) //.codi, .dapp, .codiDapp, .unknown
 ```
 
 ## UTILIZAR EL LECTOR DE CÓDIGOS QR DAPP
