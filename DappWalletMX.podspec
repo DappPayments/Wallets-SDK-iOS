@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name         = "DappWalletMX"
-  s.version      = "1.1.0"
+  s.version      = "1.2.0"
   s.summary      = "Dapp is an online payments platform from Mexico"
   s.description  = <<-DESC
 Dapp is an online payments platform, focused on the security of its users. This framework is designed for electronic Wallet developers looking to integrate into the Dapp Payments platform.

@@ -86,6 +86,25 @@ public class DappWallet {
         return qrType == .dapp || qrType == .codiDapp
     }
     
+    public func getDappId(_ code: String) -> String? {
+        guard let url = URL(string: code), let host = url.host, host == "dapp.mx" else {
+            if let data = code.data(using: .utf8),
+                let json = try? JSONSerialization.jsonObject(with: data) as? [String: Any], let dappCode = json["dapp"] as? String {
+                   return dappCode
+            }
+            return nil
+        }
+        
+        var comps = url.pathComponents
+        comps.removeFirst()
+               
+        guard let p = comps.first, p == "c" else {
+            return nil
+        }
+        
+        return url.lastPathComponent
+    }
+    
     public func readDappCode(code: String, delegate: DappWalletDelegate) {
         if apiKey.count == 0 {
             delegate.dappWalletFailure(error: .keyIsNotSet)
@@ -101,25 +120,12 @@ public class DappWallet {
             delegate.dappWalletSuccess(code: DappCode(with: data!))
         }
         
-        guard let url = URL(string: code), let host = url.host, host == "dapp.mx" else {
-            if let data = code.data(using: .utf8),
-                let json = try? JSONSerialization.jsonObject(with: data) as? [String: Any], let dappCode = json["dapp"] as? String {
-                dappRequest(url: "\(enviroment.getServer())/dapp-codes/\(dappCode)", handler: handler)
-                return
-            }
+        guard let dappId = getDappId(code) else {
             delegate.dappWalletFailure(error: .invalidDappCode)
             return
         }
         
-        var comps = url.pathComponents
-        comps.removeFirst()
-        
-        guard let p = comps.first, p == "c" else {
-            delegate.dappWalletFailure(error: .invalidDappCode)
-            return
-        }
-        
-        dappRequest(url: "\(enviroment.getServer())/dapp-codes/\(url.lastPathComponent)", handler: handler)
+        dappRequest(url: "\(enviroment.getServer())/dapp-codes/\(dappId)", handler: handler)
     }
     
     internal func dappRequest(url: String, handler: @escaping ResponseHandler) {

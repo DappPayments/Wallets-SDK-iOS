@@ -14,7 +14,7 @@ pod 'DappWalletMX'
 ```swift
 import DappWalletMX
 ```
-2. Inicializa el objeto DappWallet reemplazando _your-dapp-api-key_ con tu llave de producción dentro del método **application(_:didFinishLaunchingWithOptions:)**:
+2. Si se van a usar funciones de red, inicializa el objeto DappWallet reemplazando _your-dapp-api-key_ con tu llave de producción dentro del método **application(_:didFinishLaunchingWithOptions:)**:
 ```swift
 DappWallet.shared.apiKey = "your-dapp-api-key"
 ```
@@ -55,6 +55,14 @@ DappWallet.shared.readDappCode(code: code, delegate: self) //self == ViewControl
 ```swift
 DappWallet.shared.isValidCodi(qrTextFromScanner) //true or false
 DappWallet.shared.getQRType(qrTextFromScanner) //.codi, .dapp, .codiDapp, .unknown
+```
+
+## OBTENER ID DE CÓDIGOS QR DAPP
+
+En caso de desear obtener el ID Dapp, sin obtener el resto de la información, se puede utilizar el siguiente metodo:
+
+```swift
+DappWallet.shared.getDappId(qrTextFromScanner) // String
 ```
 
 ## UTILIZAR EL LECTOR DE CÓDIGOS QR DAPP
